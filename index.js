@@ -3,30 +3,29 @@ class App {
     startingPoints = []
     canvas = document.getElementById("canvas");
     button = document.getElementsByTagName("button")[0]
-    numberOfMidpoints = 10000
-    points = []
-    pointSize = {
-        x: 1,
-        y: 1
+    options = {
+        numberOfMidpoints: 10000,
+        colorOfPoints: '#32CD32',
+        sizeOfPoints: 3,
+        isAnimate: true
+
     }
+    points = []
+
     constructor() {
         // set size for canvas
         this.setCanvasSize()
         // append initial points
         this.setInitialPoints()
         this.drawInitialPoints()
-        this.numberChangeListener()
+        this.addEventsListeners()
         this.buttonEventListener();
-
         this.points.push(this.getARandomPointBetweenTwo(this.startingPoints[0], this.startingPoints[1]))
-
         this.createMidPoints();
-
-
     }
 
     setCanvasSize = () => {
-        this.canvas.height = window.innerHeight / 1.1
+        this.canvas.height = window.innerHeight / 1.5
         this.canvas.width = window.innerWidth / 1.5
     }
     setInitialPoints = () => {
@@ -39,45 +38,70 @@ class App {
         if (this.canvas.getContext) {
             var ctx = this.canvas.getContext('2d');
             this.startingPoints.forEach((element) => {
-                ctx.fillRect(element.x, element.y, 2, 2);
+                ctx.fillStyle = 'blue'
+                ctx.fillRect(element.x, element.y, 5, 5);
             })
         }
     }
-    numberChangeListener = () => {
-        document.getElementById("input").value = this.numberOfMidpoints
+    addEventsListeners = () => {
+        // number of points
+        document.getElementById("input").value = this.options.numberOfMidpoints
         document.getElementById("input").addEventListener("input", (e) => {
-            this.numberOfMidpoints = e.target.value
+            this.options.numberOfMidpoints = e.target.value
+        })
+        // color of points
+        document.getElementById('inputColor').value = this.options.colorOfPoints
+        document.getElementById('inputColor').addEventListener('input', (e) => {
+            this.options.colorOfPoints = e.target.value
+        })
+        // size of points
+        document.getElementById('inputSize').value = this.options.sizeOfPoints
+        document.getElementById('inputSize').addEventListener('input', (e) => {
+            this.options.sizeOfPoints = e.target.value
+        })
+        // isAnimate
+        document.getElementById('inputAnimate').checked = this.options.isAnimate
+        document.getElementById('inputAnimate').addEventListener('input', (e) => {
+        
+            this.options.isAnimate =e.target.checked
         })
     }
     buttonEventListener = () => {
         this.button.addEventListener("click", () => {
-            if (this.numberOfMidpoints < 0) alert("Number cannot be less then 0")
-            this.createMidPoints(this.numberOfMidpoints)
-            // this.draw()
+            if (this.options.numberOfMidpoints < 0) alert("Number cannot be less then 0")
+            this.createMidPoints(this.options.numberOfMidpoints)
+            this.draw()
+
         })
 
     }
-    // draw = () => {
-    //     var ctx = this.canvas.getContext('2d');
-    //     // ctx.draw(this.points[i].x, this.points[i], this.pointSize.x, this.pointSize.y)
-    //     this.points.forEach((el, index) => {
-    //         ctx.draw(el.x, el.y, this.pointSize.x, this.pointSize.y)
-    //     })
+    draw = () => {
+        console.log(this.options.isAnimate)
+        var context = this.canvas.getContext('2d');
+        var i = 0;
+        const animate = () => {
+            context.fillStyle = this.options.colorOfPoints
+            context.fillRect(this.points[i].x, this.points[i].y, this.options.sizeOfPoints, this.options.sizeOfPoints);
+            i++;
+            if (i == this.points.length) i = 0;
+            setTimeout(animate, 2);
+        };
+        if(this.options.isAnimate) animate();
+        this.points.forEach((el) =>{
+            context.fillRect(el.x, el.y, this.options.sizeOfPoints, this.options.sizeOfPoints);
 
+        })
 
-    // }
+    }
+
 
     createMidPoints = (numberOfMidpoints) => {
         // f(x) = ax + b
         // create a random point between 2 points 
-        var ctx = this.canvas.getContext('2d');
-
         for (let i = 0; i < numberOfMidpoints; i++) {
-                            let writtenPoint = this.getAPointBetweenTwo(this.points[this.points.length - 1], this.getARandomStartingPoint(this.startingPoints))
+            let writtenPoint = this.getAPointBetweenTwo(this.points[this.points.length - 1], this.getARandomStartingPoint(this.startingPoints))
             this.points.push(writtenPoint)
 
-            // console.log(test)
-            ctx.fillRect(writtenPoint.x, writtenPoint.y, this.pointSize.x, this.pointSize.y)
         }
 
     }

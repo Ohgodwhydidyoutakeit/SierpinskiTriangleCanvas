@@ -7,15 +7,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sierpinski</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <input type="number" name="numberOfPoints" id="input">
-            <button>Start animation</button>
+
+    <div class="header">
+        <div>
+            <h1>Sierpiński triangles</h1>
         </div>
-        <canvas id="canvas" style="border:1px solid #000000;"></canvas>
+        <div>
+            <div class="input">
+                <label for="numberOfPoints">Number of points:</label>
+                <input type="number" name="numberOfPoints" id="input">
+            </div>
+            <div class="input">
+                <label for="colorOfPoints">Color of points:</label>
+                <input type="color" name="colorOfPoints" id="inputColor">
+            </div>
+            <div class="input">
+                <label for="sizeOfPoints">Size of points</label>
+                <input type="range" min="1" max="10" value="2" name="sizeOfPoints" id="inputSize">
+            </div>
+            <div class="input">
+                <label for="isAnimate">Animate:</label>
+                <input type="checkbox"  name="isAnimate" id="inputAnimate">
+            </div>
+
+
+
+        </div>
+        <button>Start</button>
+
+    </div>
+    <div class="container">
+        <div>
+            <video controls>
+                <source src="image.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+        </div>
+        <div>
+
+            <canvas id="canvas" style="border:1px solid #000000;"></canvas>
+
+        </div>
+
     </div>
     <script async defer src="index.js"></script>
 
